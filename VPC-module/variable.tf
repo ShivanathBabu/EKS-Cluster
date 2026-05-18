@@ -1,5 +1,5 @@
 variable "cidr_block" {
-    default = String
+  default = "10.0.0.0/16"
 }
 
 variable "project" {
