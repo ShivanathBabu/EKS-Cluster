@@ -69,7 +69,7 @@ pipeline {
             stage('Trigger SG') {
                 steps {
                     script {
-                        build job: 'EKS-cluster-setup/vpc', //even sg fails vpc will not effect
+                        build job: 'EKS-cluster-setup/sg', //even sg fails vpc will not effect
                             propagate: false, //vpc will not wait for SG pipeline completion
                             wait: false
             
