@@ -73,8 +73,8 @@ pipeline {
                         steps {
                             script {
                                 build job: 'bastion'
-                                propagate: false
-                                wait: false
+                                      propagate: false
+                                      wait: false
                             }
                         }
                     }
@@ -83,13 +83,13 @@ pipeline {
                         steps {
                             script {
                                 build job: 'eks'
-                                propagate: false
-                                wait: false
+                                      propagate: false
+                                      wait: false
                             }
                         }
                     }
 
-                    stage('ACM ACM') {
+                    stage('Trigger ACM') {
                       // sequential  
                         steps {
                             script {
@@ -105,8 +105,8 @@ pipeline {
                         steps {
                                 script {
                                         build job: 'frontend-alb'
-                                        propagate: false
-                                        wait: false
+                                              propagate: false
+                                              wait: false
                                      }
                                 }
                             }
