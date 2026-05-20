@@ -23,7 +23,7 @@ pipeline {
                script {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """
-                            cd vpc
+                            cd EKS-cluster-setup/vpc
                             terraform init
                         """
                     }
@@ -36,7 +36,7 @@ pipeline {
                script {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                         sh """
-                            cd vpc
+                            cd EKS-cluster-setup/vpc
                             terraform plan
                         """
                     }
