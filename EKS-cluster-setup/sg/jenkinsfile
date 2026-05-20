@@ -67,7 +67,7 @@ pipeline {
 
             }
 
-            stage ('Bastion EKS ACM') {
+            stage ('Bastion EKS ACM ALB') {
                 parallel {
                     stage('Trigger Bastion') {
                         steps {
@@ -89,18 +89,19 @@ pipeline {
                         }
                     }
 
-                    stage('ACM ALB') {
-                        stages {
-                            stage('Trigger acm') {
+                    stage('ACM ACM') {
+                      // sequential  
                         steps {
-                                script {
-                                        build job: 'acm'
-                                        propagate: false
-                                        wait: false
+                            script {
+                                build job: 'acm'
+                                      propagate: false
+                                      wait: false
                                      }
-                                }
-                            }
-                             stage('Trigger alb') {
+                                }       
+                    }
+                }
+            }
+               stage('alb') {
                         steps {
                                 script {
                                         build job: 'frontend-alb'
@@ -109,23 +110,12 @@ pipeline {
                                      }
                                 }
                             }
-                        }
-                    }
 
-
-
-                }
-            }
-
-
-            
-
+        
             
         }
 
    
-
-       
 
   
     }
