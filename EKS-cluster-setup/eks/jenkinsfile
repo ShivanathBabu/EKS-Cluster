@@ -48,7 +48,7 @@ pipeline {
 
             stage ('apply') {
               
-            }
+            
             steps {
                script {
                     withAWS(credentials: 'aws-creds', region: 'us-east-1') {
