@@ -57,8 +57,8 @@ resource "aws_security_group_rule" "laptop_bastion" {
   type = "ingress"
   from_port = "22"
   to_port = "22"
-  protocol = "TCP"
-  source_security_group_id = ["0.0.0.0/0"]
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id = module.Bastion.sg_id  
 }
 
@@ -94,7 +94,7 @@ resource "aws_security_group_rule" "https_ingress" {
   from_port = "443"
   to_port = "443"
   protocol = "TCP"
-  source_security_group_id = ["0.0.0.0/0"]
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id = module.ingress.sg_id 
 }
 
@@ -116,6 +116,6 @@ resource "aws_security_group_rule" "eks_node_vpc" {
   from_port = "0"
   to_port = "0"
   protocol = "-1"
-  source_security_group_id = ["10.0.0.0/16"]
+  cidr_blocks = ["10.0.0.0/16"]
   security_group_id = module.node.sg_id 
 }
