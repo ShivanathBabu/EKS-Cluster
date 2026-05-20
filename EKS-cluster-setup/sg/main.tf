@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "Bastion_node" {
   from_port = "22"
   to_port = "22"
   protocol = "TCP"
-  source_security_group_id = module.bastion.sg_id 
+  source_security_group_id = module.Bastion.sg_id 
   security_group_id = module.node.sg_id 
 }
 
@@ -67,7 +67,7 @@ resource "aws_security_group_rule" "bastion_cluster" {
   from_port = "443"
   to_port = "443"
   protocol = "TCP"
-  source_security_group_id = module.bastion.sg_id  
+  source_security_group_id = module.Bastion.sg_id 
   security_group_id = module.cluster.sg_id
 }
 
