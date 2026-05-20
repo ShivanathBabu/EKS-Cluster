@@ -67,18 +67,58 @@ pipeline {
 
             }
 
-             stage ('destroy') {
-            steps {
-               script {
-                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
-                        sh """
-                            cd EKS-cluster-setup/sg
-                            terraform destroy -auto-approve
-                        """
+            stage ('Bastion EKS ACM') {
+                parallel {
+                    stage('Trigger Bastion') {
+                        steps {
+                            script {
+                                build job: 'bastion'
+                                propagate: false
+                                wait: false
+                            }
+                        }
                     }
-                  }
+
+                     stage('Trigger EKS') {
+                        steps {
+                            script {
+                                build job: 'eks'
+                                propagate: false
+                                wait: false
+                            }
+                        }
+                    }
+
+                    stage('ACM ALB') {
+                        stages {
+                            stage('Trigger acm') {
+                        steps {
+                                script {
+                                        build job: 'acm'
+                                        propagate: false
+                                        wait: false
+                                     }
+                                }
+                            }
+                             stage('Trigger alb') {
+                        steps {
+                                script {
+                                        build job: 'frontend-alb'
+                                        propagate: false
+                                        wait: false
+                                     }
+                                }
+                            }
+                        }
+                    }
+
+
+
                 }
             }
+
+
+            
 
             
         }
