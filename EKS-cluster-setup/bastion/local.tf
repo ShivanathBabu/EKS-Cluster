@@ -3,4 +3,9 @@ locals {
   vpc_id = data.aws_ssm_parameter.vpc.id
   subnet = data.aws_ssm_parameter.public_subnet.id
   sg = data.aws_ssm_parameter.bastion.id
+
+  common_tags = {
+    project = var.project
+    environment = var.environment
+  }
 }
