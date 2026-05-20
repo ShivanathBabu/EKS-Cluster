@@ -66,29 +66,18 @@ pipeline {
                 }
             }
 
-            // stage('Trigger SG') {
-            //     steps {
-            //         script {
-            //             build job: 'sg', //even sg fails vpc will not effect
-            //                 propagate: false, //vpc will not wait for SG pipeline completion
-            //                 wait: false
+            stage('Trigger SG') {
+                steps {
+                    script {
+                        build job: 'sg', //even sg fails vpc will not effect
+                            propagate: false, //vpc will not wait for SG pipeline completion
+                            wait: false
             
-            //         }
-            //     }
-            // }
-
-            stage ('destroy') {
-            steps {
-               script {
-                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
-                        sh """
-                            cd EKS-cluster-setup/vpc
-                            terraform destroy -auto-approve
-                        """
                     }
-                  }
                 }
             }
+
+            
         }
 
    

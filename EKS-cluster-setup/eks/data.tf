@@ -13,3 +13,7 @@ data "aws_ssm_parameter" "control_plane" {
 data "aws_ssm_parameter" "node" {
   name = "/${var.project}/${var.environment}/eksnode"
 }
+
+data "aws_ssm_parameter" "node" {
+  name = "/${var.project}/${var.environment}/acm"
+}

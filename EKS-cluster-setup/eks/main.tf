@@ -28,12 +28,33 @@ module "eks" {
   control_plane_subnet_ids = local.private
 
   create_node_security_group = false
+  create_security_group = false 
   security_group_id = local.cluster_sg
   node_security_group_id = local.eks_node
 
+    eks_managed_node_groups = {
+    green = {
+      # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
+      ami_type       = "AL2023_x86_64_STANDARD"
+      instance_types = ["m5.xlarge"]
 
-  tags = {
-    Environment = "dev"
-    Terraform   = "true"
+      min_size     = 2
+      max_size     = 10
+      desired_size = 2
+
+      iam_role_additional_policies = {
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+        AmazonEFSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
+        AmazonEKSLoadBalancingPolicy = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancingPolicy"
+      }
+    }
   }
+
+
+  tags = merge(
+    local.common_tags,
+    {
+        Name = "${var.project}-${var.environment}-eks"
+    }
+  )
 }
