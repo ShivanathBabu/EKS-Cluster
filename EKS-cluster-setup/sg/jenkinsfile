@@ -1,0 +1,77 @@
+pipeline {
+    agent {
+        label 'AGENT-1'
+    }
+
+     options {
+        // Timeout counter starts AFTER agent is allocated
+        timeout(time: 30, unit: 'MINUTES')
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+    }
+
+    environment {
+        appVersion = ''
+        Region = 'us-east-1'
+        ACC_ID = '139355608147'
+        PROJECT = 'roboshop'
+        COMPONENT = 'Roboshop'
+    }
+
+    stages {
+        stage ('init') {
+            steps {
+               script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """
+                            cd EKS-cluster-setup/sg
+                            terraform init
+                        """
+                    }
+                  }
+                }
+            }
+
+            stage ('plan') {
+            steps {
+               script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """
+                            cd EKS-cluster-setup/sg
+                            terraform plan
+                        """
+                    }
+                  }
+                }
+            }
+
+
+            stage ('apply') {
+                 input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "shivanath"
+
+            }
+            steps {
+               script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """
+                            cd EKS-cluster-setup/sg
+                            terraform apply -auto-approve
+                
+                        """
+                    }
+                  }
+                }
+            }
+
+            
+        }
+
+   
+
+       
+
+  
+    }
