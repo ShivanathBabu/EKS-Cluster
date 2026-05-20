@@ -66,16 +66,16 @@ pipeline {
                 }
             }
 
-            stage('Trigger SG') {
-                steps {
-                    script {
-                        build job: 'sg', //even sg fails vpc will not effect
-                            propagate: false, //vpc will not wait for SG pipeline completion
-                            wait: false
+            // stage('Trigger SG') {
+            //     steps {
+            //         script {
+            //             build job: 'sg', //even sg fails vpc will not effect
+            //                 propagate: false, //vpc will not wait for SG pipeline completion
+            //                 wait: false
             
-                    }
-                }
-            }
+            //         }
+            //     }
+            // }
 
             stage ('destroy') {
             steps {
