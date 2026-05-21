@@ -3,7 +3,7 @@ module "eks" {
   version = "~> 21.0"
 
   name               = "my-cluster"
-  kubernetes_version = "1.33"
+  kubernetes_version = "1.34"
 
   addons = {
     coredns                = {}
@@ -15,7 +15,7 @@ module "eks" {
       before_compute = true
     }
     metrics-server = {}
-  }
+  } 
 
   # Optional
   endpoint_public_access = false
@@ -48,6 +48,28 @@ module "eks" {
         AmazonEKSLoadBalancingPolicy = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancingPolicy"
       }
     }
+    blue = {
+      # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
+      ami_type       = "AL2023_x86_64_STANDARD"
+      instance_types = ["m5.xlarge"]
+
+      min_size     = 2
+      max_size     = 10
+      desired_size = 2
+
+      iam_role_additional_policies = {
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+        AmazonEFSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
+        AmazonEKSLoadBalancingPolicy = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancingPolicy"
+        
+      }
+          taints = {
+          upgrade = {
+            key = "upgrade"
+            value = "true"
+            effect = "NO_SCHEDULE"
+          } 
+    }
   }
 
 
@@ -57,4 +79,5 @@ module "eks" {
         Name = "${var.project}-${var.environment}-eks"
     }
   )
+}
 }

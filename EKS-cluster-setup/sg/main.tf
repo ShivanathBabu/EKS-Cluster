@@ -75,7 +75,7 @@ resource "aws_security_group_rule" "cluster_node" {
   type = "ingress"
   from_port = "0"
   to_port = "0"
-  protocol = "TCP"
+  protocol = "-1"
   source_security_group_id = module.cluster.sg_id 
   security_group_id = module.node.sg_id  
 }
@@ -84,7 +84,7 @@ resource "aws_security_group_rule" "node_cluster" {
   type = "ingress"
   from_port = "0"
   to_port = "0"
-  protocol = "TCP"
+  protocol = "-1"
   source_security_group_id = module.node.sg_id
   security_group_id = module.cluster.sg_id
 }

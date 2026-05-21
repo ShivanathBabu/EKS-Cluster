@@ -16,3 +16,9 @@ resource "aws_ssm_parameter" "eksnode" {
   value = module.node.sg_id
 }
 
+resource "aws_ssm_parameter" "sg" {
+  name = "/${var.project}/${var.environment}/alb"
+  type = "String"
+  value = module.ingress.sg_id
+}
+

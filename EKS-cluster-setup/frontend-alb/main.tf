@@ -1,23 +1,25 @@
 module "alb" {
   source = "terraform-aws-modules/alb/aws"
 
-  name    = "${var.project}-{var.environment}-alb"
+  name    = "${var.project}-${var.environment}-alb"
   vpc_id  = local.vpc
   subnets = local.public_subnet
   internal = false 
   create_security_group = false
+  security_groups = [local.sg]
+  enable_deletion_protection = false
   tags = merge(
     local.common_tags,
     {
-        Name = "${var.project}-{var.environment}-alb"
+        Name = "${var.project}-${var.environment}-alb"
     }
   )
 }
 
 resource "aws_lb_listener" "front_end" {
-  load_balancer_arn = module.alb
-  port              = "80"
-  protocol          = "HTTP"
+  load_balancer_arn = module.alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
 
    ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = local.acm
@@ -34,7 +36,7 @@ resource "aws_lb_listener" "front_end" {
 }
 
 resource "aws_lb_target_group" "test" {
-  name     = "${var.project}-{var.environment}-eks"
+  name     = "${var.project}-${var.environment}-eks"
   port     = 80
   protocol = "HTTP"
   vpc_id   = local.vpc
@@ -50,7 +52,7 @@ resource "aws_lb_target_group" "test" {
 }
 
 resource "aws_route53_record" "www" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = var.zone_id
   name    = "teshome.online"
   type    = "A"
 
@@ -71,7 +73,7 @@ resource "aws_lb_listener_rule" "host_based_weighted_routing" {
 
   condition {
     host_header {
-      values = ["$(var.environment)-${var.zone_name}"]
+      values = ["${var.environment}-${var.zone_name}"]
     }
   }
 }
