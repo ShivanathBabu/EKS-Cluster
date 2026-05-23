@@ -72,8 +72,8 @@ pipeline {
                     stage('Trigger Bastion') {
                         steps {
                             script {
-                                build job: 'bastion'
-                                      propagate: false
+                                build job: 'bastion',
+                                      propagate: false,
                                       wait: false
                             }
                         }
@@ -82,8 +82,8 @@ pipeline {
                      stage('Trigger EKS') {
                         steps {
                             script {
-                                build job: 'eks'
-                                      propagate: false
+                                build job: 'eks',
+                                      propagate: false,
                                       wait: false
                             }
                         }
@@ -104,8 +104,8 @@ pipeline {
                stage('alb') {
                         steps {
                                 script {
-                                        build job: 'frontend-alb'
-                                              propagate: false
+                                        build job: 'frontend-alb',
+                                              propagate: false,
                                               wait: false
                                      }
                                 }
