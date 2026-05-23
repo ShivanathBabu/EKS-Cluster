@@ -4,6 +4,7 @@ module "eks" {
 
   name               = "my-cluster"
   kubernetes_version = "1.34"
+  
 
   addons = {
     coredns                = {}
