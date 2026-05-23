@@ -93,8 +93,8 @@ pipeline {
                       // sequential  
                         steps {
                             script {
-                                build job: 'acm'
-                                      propagate: false
+                                build job: 'acm',
+                                      propagate: false,
                                       wait: false
                                      }
                                 }       
