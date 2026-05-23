@@ -61,6 +61,22 @@ pipeline {
                   }
                 }
             }
+
+            stage ('destroy') {
+              
+            
+            steps {
+               script {
+                    withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                        sh """
+                            cd EKS-cluster-setup/frontend-alb
+                            terraform destroy -auto-approve
+                
+                        """
+                    }
+                  }
+                }
+            }
           
         }
 }
