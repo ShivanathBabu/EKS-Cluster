@@ -49,6 +49,7 @@ module "eks" {
         AmazonEKSLoadBalancingPolicy = "arn:aws:iam::aws:policy/AmazonEKSLoadBalancingPolicy"
       }
     }
+    
   #   blue = {
   #     # Starting on 1.30, AL2023 is the default AMI type for EKS managed node groups
   #     ami_type       = "AL2023_x86_64_STANDARD"
@@ -73,12 +74,12 @@ module "eks" {
   #   }
   # }
 
-
+    }
   tags = merge(
     local.common_tags,
     {
         Name = "${var.project}-${var.environment}-eks"
     }
   )
-}
+
 }
