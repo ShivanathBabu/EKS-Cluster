@@ -17,3 +17,7 @@ variable "public_subnet" {
 variable "private_subnet" {
  
 }
+
+variable "is_peering_required" {
+  default = false
+}
