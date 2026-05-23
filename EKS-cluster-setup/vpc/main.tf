@@ -4,4 +4,7 @@ module "vpc" {
   private_subnet = var.private_subnet
   project = var.project
   environment = var.environment
+
+  is_peering_required = true
+
 }
