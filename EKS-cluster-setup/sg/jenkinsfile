@@ -67,49 +67,60 @@ pipeline {
 
             }
 
-            stage ('Bastion EKS ACM ALB') {
-                parallel {
-                    stage('Trigger Bastion') {
-                        steps {
-                            script {
-                                build job: 'bastion',
-                                      propagate: false,
-                                      wait: false
-                            }
-                        }
-                    }
-
-                     stage('Trigger EKS') {
-                        steps {
-                            script {
-                                build job: 'eks',
-                                      propagate: false,
-                                      wait: false
-                            }
-                        }
-                    }
-
-                    stage('Trigger ACM') {
-                      // sequential  
-                        steps {
-                            script {
-                                build job: 'acm',
-                                      propagate: false,
-                                      wait: false
-                                     }
-                                }       
+            stage ('destroy') {
+                steps {
+                    script {
+                        sh """
+                            cd EKS-cluster-setup/sg
+                            terraform destroy -auto-approve
+                        """
                     }
                 }
             }
-               stage('alb') {
-                        steps {
-                                script {
-                                        build job: 'frontend-alb',
-                                              propagate: false,
-                                              wait: false
-                                     }
-                                }
-                            }
+
+            // stage ('Bastion EKS ACM ALB') {
+            //     parallel {
+            //         stage('Trigger Bastion') {
+            //             steps {
+            //                 script {
+            //                     build job: 'bastion',
+            //                           propagate: false,
+            //                           wait: false
+            //                 }
+            //             }
+            //         }
+
+            //          stage('Trigger EKS') {
+            //             steps {
+            //                 script {
+            //                     build job: 'eks',
+            //                           propagate: false,
+            //                           wait: false
+            //                 }
+            //             }
+            //         }
+
+            //         stage('Trigger ACM') {
+            //           // sequential  
+            //             steps {
+            //                 script {
+            //                     build job: 'acm',
+            //                           propagate: false,
+            //                           wait: false
+            //                          }
+            //                     }       
+            //         }
+            //     }
+            // }
+            //    stage('alb') {
+            //             steps {
+            //                     script {
+            //                             build job: 'frontend-alb',
+            //                                   propagate: false,
+            //                                   wait: false
+            //                          }
+            //                     }
+            //                 }
 
         
             
