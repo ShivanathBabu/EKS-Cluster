@@ -66,6 +66,17 @@ pipeline {
                 }
             }
 
+            stage ('Destroy') {
+                steps {
+                    script {
+                        sh """
+                             cd EKS-cluster-setup/vpc
+                            terraform destroy -auto-approve
+                        """
+                    }
+                }
+            }
+
             stage('Trigger SG') {
                 steps {
                     script {
